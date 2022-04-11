@@ -1,5 +1,10 @@
+#2022.4.11-青岛图海维度科技有限公司
 QT       += core gui
-
+QT       += network
+QT       += serialport
+QT       += sql
+QT       += opengl
+LIBS+=-lopengl32 -lglu32
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
@@ -16,11 +21,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    crc.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    socket.cpp
 
 HEADERS += \
-    mainwindow.h
+    crc.h \
+    mainwindow.h \
+    socket.h
 
 FORMS += \
     mainwindow.ui

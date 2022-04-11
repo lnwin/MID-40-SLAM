@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    CRC=new crc();
 }
 
 MainWindow::~MainWindow()
@@ -13,3 +14,12 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+void MainWindow::on_pushButton_clicked()
+{
+    UDP_MID40=new socket();
+
+   // QByteArray sk = ;
+
+    //qDebug()<<CRC->ModbusCRC16();
+}
