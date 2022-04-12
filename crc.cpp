@@ -10,7 +10,8 @@
     crc = (crc >> 8) ^ (table[crc & 0xff]); \
     crc = (crc >> 8) ^ (table[crc & 0xff]);
 #define CRC_TABLE_CRC32 crc_table_crc32
-
+bool checkPassed=false;
+bool checkover=false;
 crc::crc()
 {
 
@@ -100,3 +101,77 @@ uint32_t crc::FastCRC32(const uint8_t *data, uint16_t len)
 
     return crc;
 }
+QByteArray BBA;
+bool crc::checkCRC(QByteArray ba)
+{
+
+     BBA=ba;
+     this->start();
+
+     while(!checkover)
+     {
+         qDebug()<<"is checking...";
+     }
+     if(checkPassed)
+     {
+         return true;
+     }
+     else
+     {
+         return false;
+     }
+
+};
+
+
+
+void crc::run()
+{
+    checkover=false;
+    //qDebug()<<BBA;
+    qDebug()<<BBA.toHex();
+    bool ok;
+    int MESG_NUMBER=BBA.mid(2,1).toHex().toInt(&ok, 16)+BBA.mid(3,1).toHex().toInt(&ok, 16)*256;
+    int MESG_NUMBER_nCRC=MESG_NUMBER-4;
+    uint8_t MESG_head[7];
+    for(int i=0;i<7;i++)
+    {
+        MESG_head[i]=(uint8_t)BBA.at(i);
+    }
+
+    uint8_t MESG_all[1404];
+
+    for(int i=0;i<MESG_NUMBER_nCRC;i++)
+    {
+        MESG_all[i]=(uint8_t)BBA.at(i);
+    }
+  //  qDebug()<<QString::number(SOC_CRC->FastCRC16(MESG_head,7), 16);
+     QByteArray check_crc16;
+     QByteArray check_crc32;
+    check_crc16.append(BBA.at(8));
+    check_crc16.append(BBA.at(7));
+   // qDebug()<<check_crc16.toHex().toInt(&ok, 16);
+   // qDebug()<<FastCRC16(MESG_head,7);
+    check_crc32.append(BBA.at(MESG_NUMBER-1));
+    check_crc32.append(BBA.at(MESG_NUMBER-2));
+    check_crc32.append(BBA.at(MESG_NUMBER-3));
+    check_crc32.append(BBA.at(MESG_NUMBER-4));
+   // qDebug()<<check_crc32.toHex().toLongLong(&ok, 16);
+   // qDebug()<<BBA.at(MESG_NUMBER-1);
+   // qDebug()<<FastCRC32(MESG_all,MESG_NUMBER_nCRC);
+    qDebug()<<QByteArray::number(FastCRC32(MESG_all,MESG_NUMBER_nCRC),16);
+
+    if((check_crc16.toHex().toInt(&ok, 16)==FastCRC16(MESG_head,7))&&(check_crc32.toHex().toLongLong(&ok, 16)==FastCRC32(MESG_all,MESG_NUMBER_nCRC)))
+    {
+        checkPassed=true;
+    }
+    else
+    {
+        checkPassed=false;
+    }
+
+    checkover=true;
+
+
+}
+

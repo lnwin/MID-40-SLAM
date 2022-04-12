@@ -2,16 +2,18 @@
 #define CRC_H
 
 #include <QObject>
-
-class crc:public QObject
+#include <QDebug>
+#include <qthread.h>
+class crc:public QThread
 {
     Q_OBJECT
+
 public:
     crc();
     uint16_t ModbusCRC16(QByteArray senddata);
     uint16_t FastCRC16(const uint8_t *data, uint16_t len);
     uint32_t FastCRC32(const uint8_t *data, uint16_t len);
-
+    bool checkCRC(QByteArray);
     // crc16 table
     const uint32_t crc_table_crc32[256] = {
         0x00000000, 0x77073096, 0xee0e612c, 0x990951ba,
@@ -209,6 +211,8 @@ public:
         0x772b, 0x6b90, 0x4e5d, 0x52e6, 0x05c7, 0x197c, 0x3cb1, 0x200a,
         0x92f3, 0x8e48, 0xab85, 0xb73e, 0xe01f, 0xfca4, 0xd969, 0xc5d2
     };
+    crc*check_crc;
+    void run() override;
 
 };
 

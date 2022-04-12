@@ -17,7 +17,8 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_pushButton_clicked();
+
+    void on_connectMID40_clicked();
 
 private:
     Ui::MainWindow *ui;

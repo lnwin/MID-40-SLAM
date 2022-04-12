@@ -14,17 +14,17 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="connectMID40">
     <property name="geometry">
      <rect>
-      <x>300</x>
-      <y>270</y>
-      <width>75</width>
-      <height>121</height>
+      <x>440</x>
+      <y>350</y>
+      <width>101</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>创建通信</string>
+     <string>Connect MID40</string>
     </property>
    </widget>
   </widget>

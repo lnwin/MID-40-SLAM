@@ -17,6 +17,8 @@ public:
     socket();
     void connectMID_40();
     void needData();
+    void sendHeartBag();
+
 public slots:
     void receive();
 private:

@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     CRC=new crc();
+    UDP_MID40=new socket();
 }
 
 MainWindow::~MainWindow()
@@ -14,12 +15,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_connectMID40_clicked()
 {
-    UDP_MID40=new socket();
-
-   // QByteArray sk = ;
-
-    //qDebug()<<CRC->ModbusCRC16();
+     UDP_MID40->connectMID_40();
 }
