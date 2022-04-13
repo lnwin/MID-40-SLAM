@@ -170,7 +170,18 @@ void socket::sendHandPackage()
 void socket::connectMID_40()
 {
 
-
-       // qDebug()<<"msg.toHex()"<<msg.toHex();
+    QByteArray head;
+    head[0]=0xaa;//起始字节，固定为 0xAA
+    head[1]=0x01;//协议版本, 当前为1
+    head[2]=0x19;//数据帧长度,
+    head[3]=0x00;//数据帧长度,
+    head[4]=0x00;//命令类型
+    head[5]=0x00;//数据帧序列号
+    head[6]=0x00;//数据帧序列号
+    uint8_t MESG_head[7];
+    QByteArray sk;
+    sk.append(head[3]);
+    sk.append(head[2]);
+    qDebug()<< sk.toHex().toInt(0,16); //测试通过
 
 }
