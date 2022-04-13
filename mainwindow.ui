@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1090</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,16 +15,45 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="connectMID40">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>350</y>
+      <x>850</x>
+      <y>620</y>
       <width>101</width>
-      <height>41</height>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
      <string>Connect MID40</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Device_type">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>650</y>
+      <width>102</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Deveice_Type:NULL</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Device_ID">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>650</y>
+      <width>351</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ID:NULL</string>
     </property>
    </widget>
   </widget>
@@ -33,12 +62,11 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1090</width>
      <height>23</height>
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>

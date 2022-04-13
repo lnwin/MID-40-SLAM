@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+
 #include <QMainWindow>
 #include <socket.h>
 #include <crc.h>
@@ -16,9 +17,10 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
+public slots:
 
     void on_connectMID40_clicked();
+    void receiveDeviceMSGFromSocket(DEVICEMSG);
 
 private:
     Ui::MainWindow *ui;

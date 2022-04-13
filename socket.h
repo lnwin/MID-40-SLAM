@@ -9,6 +9,8 @@
 #include <iostream>
 #include <qdebug.h>
 #include <crc.h>
+#include <QMetaType>
+#include <QTimer>
 class socket: public QObject
 {
     Q_OBJECT
@@ -16,14 +18,24 @@ class socket: public QObject
 public:
     socket();
     void connectMID_40();
-    void needData();
-    void sendHeartBag();
+    void needData();    
+    void sendHandPackage();
 
 public slots:
     void receive();
+    void receiveDeviceMSG(DEVICEMSG);
+    void sendHeartPackage();
+    void receiveHandbool(bool);
+
+signals:
+
+    void sendDevicdMSG2Main(DEVICEMSG);
+
+
 private:
     QUdpSocket *uSocket;
     crc*SOC_CRC;
+    QTimer *heartTimer;
 };
 
 #endif // SOCKET_H

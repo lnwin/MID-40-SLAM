@@ -1,4 +1,5 @@
 #include "crc.h"
+#include <mutex>
 #define crc_n4(crc, data, table) crc ^= data; \
     crc = (table[(crc & 0xff) + 0x300]) ^		\
           (table[((crc >> 8) & 0xff) + 0x200]) ^	\
@@ -12,6 +13,9 @@
 #define CRC_TABLE_CRC32 crc_table_crc32
 bool checkPassed=false;
 bool checkover=false;
+
+std::mutex mtx;
+
 crc::crc()
 {
 
@@ -110,7 +114,7 @@ bool crc::checkCRC(QByteArray ba)
 
      while(!checkover)
      {
-         qDebug()<<"is checking...";
+        // qDebug()<<"is checking...";
      }
      if(checkPassed)
      {
@@ -123,13 +127,11 @@ bool crc::checkCRC(QByteArray ba)
 
 };
 
-
-
 void crc::run()
 {
     checkover=false;
     //qDebug()<<BBA;
-    qDebug()<<BBA.toHex();
+   // qDebug()<<BBA.toHex();
     bool ok;
     int MESG_NUMBER=BBA.mid(2,1).toHex().toInt(&ok, 16)+BBA.mid(3,1).toHex().toInt(&ok, 16)*256;
     int MESG_NUMBER_nCRC=MESG_NUMBER-4;
@@ -159,7 +161,7 @@ void crc::run()
    // qDebug()<<check_crc32.toHex().toLongLong(&ok, 16);
    // qDebug()<<BBA.at(MESG_NUMBER-1);
    // qDebug()<<FastCRC32(MESG_all,MESG_NUMBER_nCRC);
-    qDebug()<<QByteArray::number(FastCRC32(MESG_all,MESG_NUMBER_nCRC),16);
+   // qDebug()<<QByteArray::number(FastCRC32(MESG_all,MESG_NUMBER_nCRC),16);
 
     if((check_crc16.toHex().toInt(&ok, 16)==FastCRC16(MESG_head,7))&&(check_crc32.toHex().toLongLong(&ok, 16)==FastCRC32(MESG_all,MESG_NUMBER_nCRC)))
     {
@@ -171,7 +173,75 @@ void crc::run()
     }
 
     checkover=true;
-
+    mtx.lock();
+    analysisMsg(BBA);
+    mtx.unlock();
 
 }
 
+void crc::analysisMsg(QByteArray data)
+{
+
+    QString CMD_tpye =data.mid(4,1).toHex();
+    if(CMD_tpye=="02")
+    {
+        findDeviceMsg(data);
+    }
+    else
+    {
+        QString CMD_SET =data.mid(9,1).toHex();
+
+        if(CMD_SET=="00")
+        {
+          analysisCurrentACK(data);
+        }
+
+        else if (CMD_SET=="01")
+        {
+            analysisLidarACK(data);
+        }
+
+        else
+        {
+            analysisHubACK(data);
+        }
+
+    }
+
+}
+void crc::findDeviceMsg(QByteArray data)
+{
+
+     if(data.size()==34)
+     {
+
+        DEVICEMSG DM;
+        DM.TYPE = data.mid(27,1).toHex();
+        DM.ID = data.mid(11,16).toHex();
+        emit sendDeviceMSG(DM);
+
+     }
+
+
+};
+void crc::analysisCurrentACK(QByteArray data)
+{
+
+     QString CMD_ID =data.mid(10,1).toHex();
+   //  qDebug()<<CMD_ID;
+     if(CMD_ID=="01")
+     {
+       emit sendHandbool(true);
+     }
+
+
+}
+void crc::analysisLidarACK(QByteArray data)
+{
+
+
+};
+void crc::analysisHubACK(QByteArray data)
+{
+
+};
