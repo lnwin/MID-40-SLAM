@@ -6,13 +6,26 @@
 #include <QDebug>
 #include <qthread.h>
 #include <QMetaType>
-
+#include <QtEndian>
 struct DEVICEMSG
 {
      QByteArray TYPE;
      QByteArray ID;
 };
+
 Q_DECLARE_METATYPE(DEVICEMSG);
+struct cloudData
+{
+
+    int x[100];
+    int y[100];
+    int z[100];
+
+};
+Q_DECLARE_METATYPE(cloudData);
+
+
+
 
 class crc: public QThread
 {
@@ -32,12 +45,14 @@ public:
     void analysisCurrentACK(QByteArray data);
     void analysisLidarACK(QByteArray data);
     void analysisHubACK(QByteArray data);
-
-
+    void analysisPointCloud(QByteArray data);
+    float Hex3Dec(QString hex);
 signals:
 
    void sendDeviceMSG(DEVICEMSG);
+   void sendNeedHand(bool);
    void sendHandbool(bool);
+   void sendCloudData2GL(cloudData);
 
 public:
    const uint32_t crc_table_crc32[256] = {

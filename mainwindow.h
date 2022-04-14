@@ -21,10 +21,14 @@ public slots:
 
     void on_connectMID40_clicked();
     void receiveDeviceMSGFromSocket(DEVICEMSG);
+    void receiveHandbool(bool);
+private slots:
+    void on_startSample_clicked();
+    void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
-    socket *UDP_MID40;
+    socket_M *UDP_MID40;
     crc *CRC;
 };
 #endif // MAINWINDOW_H

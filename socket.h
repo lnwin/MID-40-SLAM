@@ -11,12 +11,12 @@
 #include <crc.h>
 #include <QMetaType>
 #include <QTimer>
-class socket: public QObject
+class socket_M: public QObject
 {
     Q_OBJECT
 
 public:
-    socket();
+    socket_M();
     void connectMID_40();
     void needData();    
     void sendHandPackage();
@@ -26,11 +26,12 @@ public slots:
     void receiveDeviceMSG(DEVICEMSG);
     void sendHeartPackage();
     void receiveHandbool(bool);
+    void receivesendNeedHand(bool);
 
 signals:
 
     void sendDevicdMSG2Main(DEVICEMSG);
-
+    void sendHandbool2M(bool);
 
 private:
     QUdpSocket *uSocket;

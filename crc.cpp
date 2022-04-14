@@ -182,31 +182,42 @@ void crc::run()
 void crc::analysisMsg(QByteArray data)
 {
 
-    QString CMD_tpye =data.mid(4,1).toHex();
-    if(CMD_tpye=="02")
+    QString HEAD =data.mid(0,1).toHex();
+     if(HEAD=="aa")
     {
-        findDeviceMsg(data);
+         QString CMD_tpye =data.mid(4,1).toHex();
+         if(CMD_tpye=="02")
+         {
+             findDeviceMsg(data);
+         }
+         else if(CMD_tpye=="01")
+         {
+             QString CMD_SET =data.mid(9,1).toHex();
+
+             if(CMD_SET=="00")
+             {
+               analysisCurrentACK(data);
+             }
+
+             else if (CMD_SET=="01")
+             {
+                 analysisLidarACK(data);
+             }
+
+             else
+             {
+                 analysisHubACK(data);
+             }
+
+        }
+
     }
-    else
-    {
-        QString CMD_SET =data.mid(9,1).toHex();
+     else if(HEAD=="05")
+     {
+         analysisPointCloud(data);
+     }
 
-        if(CMD_SET=="00")
-        {
-          analysisCurrentACK(data);
-        }
 
-        else if (CMD_SET=="01")
-        {
-            analysisLidarACK(data);
-        }
-
-        else
-        {
-            analysisHubACK(data);
-        }
-
-    }
 
 }
 void crc::findDeviceMsg(QByteArray data)
@@ -228,12 +239,24 @@ void crc::analysisCurrentACK(QByteArray data)
 {
 
      QString CMD_ID =data.mid(10,1).toHex();
-   //  qDebug()<<CMD_ID;
+    // qDebug()<<CMD_ID;
      if(CMD_ID=="01")
      {
-       emit sendHandbool(true);
+       emit sendNeedHand(true);
      }
+     else if(CMD_ID=="03")
+     {
+        QString ret_code =data.mid(11,1).toHex();
+         if(ret_code=="00")
+         {
+             emit sendHandbool(true);
+         }
+        else
+         {
+             emit sendHandbool(false);
+         }
 
+     }
 
 }
 void crc::analysisLidarACK(QByteArray data)
@@ -245,3 +268,69 @@ void crc::analysisHubACK(QByteArray data)
 {
 
 };
+void crc::analysisPointCloud(QByteArray data)
+{
+       QByteArray pointData =data;
+       cloudData  CD;
+       for(int i=0;i<100;i++)
+      {
+        QByteArray x;
+        QByteArray y;
+        QByteArray z;
+        x=pointData.mid(18+i,4);
+        y=pointData.mid(22+i,4);
+        z=pointData.mid(26+i,4);
+        std::reverse(x.begin(), x.end());
+        std::reverse(y.begin(), y.end());
+        std::reverse(z.begin(), z.end());
+        CD.x[i]=Hex3Dec(x);
+        CD.y[i]=Hex3Dec(y);
+        CD.z[i]=Hex3Dec(z);
+      }
+
+       emit sendCloudData2GL(CD);
+
+}
+
+
+
+float crc::Hex3Dec(QString hex)
+{
+      bool ok;
+      float finaldata;
+      long long a =hex.toLongLong(&ok,16);
+      QString bin =QString::number(a,2);
+      int datalength =bin.length();
+      if(datalength%4==0)
+      {
+             for (int i=0;i<datalength;i++)
+             {
+                 if(bin[i]=="0")
+                 {
+                     bin[i]='1';
+                 }
+                 else
+                 {
+                     bin[i]='0';
+                 }
+
+             }
+
+             finaldata = (double)(-(bin.toInt(&ok,2)+1));
+             return finaldata;
+         }
+
+         else
+         {
+             QString data =hex;
+             finaldata =(double)data.toInt(&ok,16);
+             return finaldata;
+
+         }
+
+
+}
+
+
+
+
