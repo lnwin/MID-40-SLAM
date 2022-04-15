@@ -4,7 +4,8 @@
 
 #include <QMainWindow>
 #include <socket.h>
-#include <crc.h>
+#include <openglshow.h>
+#include  <localStruct.h>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -26,9 +27,10 @@ private slots:
     void on_startSample_clicked();
     void on_pushButton_clicked();
 
-private:
+public:
     Ui::MainWindow *ui;
     socket_M *UDP_MID40;
     crc *CRC;
+    openglShow *GL;
 };
 #endif // MAINWINDOW_H

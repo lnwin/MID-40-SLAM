@@ -1,32 +1,12 @@
 #ifndef CRC_H
 #define CRC_H
-
-
+#include <ui_mainwindow.h>
 #include <QObject>
 #include <QDebug>
 #include <qthread.h>
 #include <QMetaType>
 #include <QtEndian>
-struct DEVICEMSG
-{
-     QByteArray TYPE;
-     QByteArray ID;
-};
-
-Q_DECLARE_METATYPE(DEVICEMSG);
-struct cloudData
-{
-
-    int x[100];
-    int y[100];
-    int z[100];
-
-};
-Q_DECLARE_METATYPE(cloudData);
-
-
-
-
+#include <localStruct.h>
 class crc: public QThread
 {
     Q_OBJECT
@@ -38,8 +18,8 @@ public:
     uint32_t FastCRC32(const uint8_t *data, uint16_t len);
     bool checkCRC(QByteArray);
     // crc16 table
-    crc*check_crc;
     void run() override;
+    void getUI(Ui::MainWindow);
     void analysisMsg(QByteArray data);
     void findDeviceMsg(QByteArray data);
     void analysisCurrentACK(QByteArray data);
@@ -47,12 +27,16 @@ public:
     void analysisHubACK(QByteArray data);
     void analysisPointCloud(QByteArray data);
     float Hex3Dec(QString hex);
+    void showDataOnUi(Ui::MainWindow,cloudData);
+    Ui::MainWindow UI;
 signals:
 
    void sendDeviceMSG(DEVICEMSG);
    void sendNeedHand(bool);
    void sendHandbool(bool);
    void sendCloudData2GL(cloudData);
+public slots:
+   void receiveData(QByteArray);
 
 public:
    const uint32_t crc_table_crc32[256] = {

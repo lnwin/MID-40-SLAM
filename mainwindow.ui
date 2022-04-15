@@ -91,7 +91,7 @@
      <string>Start Sample</string>
     </property>
    </widget>
-   <widget class="QOpenGLWidget" name="openGLWidget">
+   <widget class="openglShow" name="openGLWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -117,7 +117,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Pitch</string>
+     <string>X</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
@@ -136,7 +136,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Yaw</string>
+     <string>Y</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
@@ -155,10 +155,10 @@
      </font>
     </property>
     <property name="text">
-     <string>Roll</string>
+     <string>X</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="pitch">
+   <widget class="QLineEdit" name="point_x">
     <property name="geometry">
      <rect>
       <x>930</x>
@@ -168,7 +168,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="yaw">
+   <widget class="QLineEdit" name="point_y">
     <property name="geometry">
      <rect>
       <x>930</x>
@@ -178,7 +178,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="roll">
+   <widget class="QLineEdit" name="point_z">
     <property name="geometry">
      <rect>
       <x>930</x>
@@ -192,7 +192,7 @@
     <property name="geometry">
      <rect>
       <x>870</x>
-      <y>130</y>
+      <y>160</y>
       <width>81</width>
       <height>20</height>
      </rect>
@@ -211,7 +211,7 @@
     <property name="geometry">
      <rect>
       <x>990</x>
-      <y>130</y>
+      <y>160</y>
       <width>81</width>
       <height>20</height>
      </rect>
@@ -245,6 +245,35 @@
      <string>Test</string>
     </property>
    </widget>
+   <widget class="QLineEdit" name="point_reflect">
+    <property name="geometry">
+     <rect>
+      <x>930</x>
+      <y>110</y>
+      <width>113</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>870</x>
+      <y>110</y>
+      <width>54</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>HP Simplified Jpan</family>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Reflect</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -257,6 +286,13 @@
    </property>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>openglShow</class>
+   <extends>QOpenGLWidget</extends>
+   <header location="global">openglshow.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="source.qrc"/>
  </resources>

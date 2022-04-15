@@ -1,5 +1,6 @@
 #include "crc.h"
 #include <mutex>
+#include <ui_mainwindow.h>
 #define crc_n4(crc, data, table) crc ^= data; \
     crc = (table[(crc & 0xff) + 0x300]) ^		\
           (table[((crc >> 8) & 0xff) + 0x200]) ^	\
@@ -277,23 +278,29 @@ void crc::analysisPointCloud(QByteArray data)
         QByteArray x;
         QByteArray y;
         QByteArray z;
+        QByteArray R;
         x=pointData.mid(18+i,4);
         y=pointData.mid(22+i,4);
         z=pointData.mid(26+i,4);
+        R=pointData.mid(30+i,1);
         std::reverse(x.begin(), x.end());
         std::reverse(y.begin(), y.end());
         std::reverse(z.begin(), z.end());
-        CD.x[i]=Hex3Dec(x);
-        CD.y[i]=Hex3Dec(y);
-        CD.z[i]=Hex3Dec(z);
+        CD.x[i]=Hex3Dec(x.toHex());
+        CD.y[i]=Hex3Dec(y.toHex());
+        CD.z[i]=Hex3Dec(z.toHex());
+        CD.reflect[i]=Hex3Dec(R.toHex());
+//        if(i==99)
+//        {
+//             showDataOnUi(UI,CD);
+//        }
+
       }
 
        emit sendCloudData2GL(CD);
+       // emit sendCloudData2GL(CD);
 
 }
-
-
-
 float crc::Hex3Dec(QString hex)
 {
       bool ok;
@@ -330,7 +337,22 @@ float crc::Hex3Dec(QString hex)
 
 
 }
+void crc::receiveData(QByteArray ba)
+{
+    checkCRC(ba);
+};
+void crc::showDataOnUi(Ui::MainWindow ui,cloudData ba)
+{
+    cloudData AK=ba;
+    qDebug()<<AK.x[0];
+    qDebug()<<AK.x[0];
+    qDebug()<<AK.x[0];
+   // ui.point_x->setText(QString::number(AK.x[0]));
+   // ui.point_y->setText(QString::number(AK.y[0]));
+    //ui.point_z->setText(QString::number(AK.z[0]));
 
-
-
-
+};
+void crc::getUI(Ui::MainWindow ok)
+{
+    UI=ok;
+}

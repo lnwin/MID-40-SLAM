@@ -24,11 +24,14 @@ SOURCES += \
     crc.cpp \
     main.cpp \
     mainwindow.cpp \
+    openglshow.cpp \
     socket.cpp
 
 HEADERS += \
     crc.h \
+    localStruct.h \
     mainwindow.h \
+    openglshow.h \
     socket.h
 
 FORMS += \

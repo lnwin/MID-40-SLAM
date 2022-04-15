@@ -5,13 +5,12 @@ socket_M::socket_M()
         SOC_CRC = new crc;
         uSocket = new QUdpSocket;
         heartTimer =new QTimer;
+      //  GL =new openglShow;
         uSocket->bind(QHostAddress("192.168.1.77"), 55000);
         heartTimer->setInterval(1000);
 
         connect(uSocket, SIGNAL(readyRead()), this, SLOT(receive()));
-        connect(SOC_CRC,SIGNAL(sendDeviceMSG(DEVICEMSG)),this,SLOT(receiveDeviceMSG(DEVICEMSG)));
-         connect(SOC_CRC,SIGNAL(sendNeedHand(bool)),this,SLOT(receivesendNeedHand(bool)));
-        connect(SOC_CRC,SIGNAL(sendHandbool(bool)),this,SLOT(receiveHandbool(bool)));
+
         connect(heartTimer, SIGNAL(timeout()), this, SLOT(sendHeartPackage()));
 
         qDebug()<<"UDP success";
@@ -27,10 +26,12 @@ void socket_M::receive()
 
        if(!ba.isNull())
        {
-           if(SOC_CRC->checkCRC(ba))
-           {
-               //qDebug()<<"socket check passed";
-           }
+
+           emit sendData2CRC(ba);
+//           if(SOC_CRC->checkCRC(ba))
+//           {
+//               //qDebug()<<"socket check passed";
+//           }
        }
 
     }

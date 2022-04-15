@@ -9,8 +9,10 @@
 #include <iostream>
 #include <qdebug.h>
 #include <crc.h>
+#include <openglshow.h>
 #include <QMetaType>
 #include <QTimer>
+#include <localStruct.h>
 class socket_M: public QObject
 {
     Q_OBJECT
@@ -32,11 +34,12 @@ signals:
 
     void sendDevicdMSG2Main(DEVICEMSG);
     void sendHandbool2M(bool);
+    void sendData2CRC(QByteArray);
 
-private:
+public:
     QUdpSocket *uSocket;
-    crc*SOC_CRC;
-    QTimer *heartTimer;
+    crc *SOC_CRC;
+    QTimer *heartTimer;   
 };
 
 #endif // SOCKET_H
