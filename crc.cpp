@@ -213,10 +213,10 @@ void crc::analysisMsg(QByteArray data)
         }
 
     }
-     else if(HEAD=="05")
-     {
-         analysisPointCloud(data);
-     }
+//     else if(HEAD=="05")
+//     {
+//         analysisPointCloud(data);
+//     }
 
 
 
@@ -297,7 +297,7 @@ void crc::analysisPointCloud(QByteArray data)
 
       }
 
-       emit sendCloudData2GL(CD);
+    //   emit sendCloudData2GL(CD);
        // emit sendCloudData2GL(CD);
 
 }

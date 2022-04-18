@@ -1,10 +1,11 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 
 #include <QMainWindow>
 #include <socket.h>
 #include <openglshow.h>
+#include "cloudpointthread.h"
 #include  <localStruct.h>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -27,10 +28,14 @@ private slots:
     void on_startSample_clicked();
     void on_pushButton_clicked();
 
+
 public:
     Ui::MainWindow *ui;
     socket_M *UDP_MID40;
     crc *CRC;
     openglShow *GL;
+    cloudPointThread*CPT;
+protected:
+    void wheelEvent(QWheelEvent *event);
 };
 #endif // MAINWINDOW_H

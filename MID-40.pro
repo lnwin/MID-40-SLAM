@@ -25,20 +25,27 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     openglshow.cpp \
-    socket.cpp
+    socket.cpp \
+    Math3d.cpp \
+    cloudpointthread.cpp
 
 HEADERS += \
     crc.h \
     localStruct.h \
     mainwindow.h \
     openglshow.h \
-    socket.h
+    socket.h \
+    math3d.h \
+    cloudpointthread.h
 
 FORMS += \
     mainwindow.ui
 
+INCLUDEPATH += ./Include
+
 TRANSLATIONS += \
     MID-40_zh_TW.ts
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -47,3 +54,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     source.qrc
+

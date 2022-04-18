@@ -1,4 +1,4 @@
-#ifndef SOCKET_H
+﻿#ifndef SOCKET_H
 #define SOCKET_H
 
 #include <QObject>
@@ -25,6 +25,7 @@ public:
 
 public slots:
     void receive();
+    void readCloudP();
     void receiveDeviceMSG(DEVICEMSG);
     void sendHeartPackage();
     void receiveHandbool(bool);
@@ -35,9 +36,12 @@ signals:
     void sendDevicdMSG2Main(DEVICEMSG);
     void sendHandbool2M(bool);
     void sendData2CRC(QByteArray);
+    void sendData2CP(QByteArray);
+
 
 public:
     QUdpSocket *uSocket;
+    QUdpSocket *uSocketCloudP;
     crc *SOC_CRC;
     QTimer *heartTimer;   
 };

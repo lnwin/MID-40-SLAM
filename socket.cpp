@@ -4,13 +4,15 @@ socket_M::socket_M()
 {
         SOC_CRC = new crc;
         uSocket = new QUdpSocket;
+        uSocketCloudP = new QUdpSocket;
         heartTimer =new QTimer;
       //  GL =new openglShow;
         uSocket->bind(QHostAddress("192.168.1.77"), 55000);
+        uSocketCloudP->bind(QHostAddress("192.168.1.77"), 55100);
         heartTimer->setInterval(1000);
 
         connect(uSocket, SIGNAL(readyRead()), this, SLOT(receive()));
-
+        connect(uSocketCloudP, SIGNAL(readyRead()), this, SLOT(readCloudP()));
         connect(heartTimer, SIGNAL(timeout()), this, SLOT(sendHeartPackage()));
 
         qDebug()<<"UDP success";
@@ -34,6 +36,28 @@ void socket_M::receive()
 //           }
        }
 
+    }
+}
+
+void socket_M::readCloudP()
+{
+
+    QByteArray ba;
+    while(uSocketCloudP->hasPendingDatagrams())
+    {
+        ba.resize(uSocketCloudP->pendingDatagramSize());
+        uSocketCloudP->readDatagram(ba.data(), ba.size());
+        if(!ba.isNull())
+        {
+             QString HEAD =ba.mid(0,1).toHex();
+            if(HEAD=="05")
+            {
+               // qDebug()<<";";
+                emit sendData2CP(ba);
+
+            }
+
+        }
     }
 }
 void socket_M::receiveDeviceMSG(DEVICEMSG DM)
@@ -133,8 +157,8 @@ void socket_M::sendHandPackage()
     data[3]=0xa8;//主机IP地址
     data[4]=0x01;//主机IP地址
     data[5]=0x4d;//主机IP地址
-    data[6]=0xd8;//主机点云数据UDP目的端口
-    data[7]=0xd6;//主机点云数据UDP目的端口
+    data[6]=0x3c;//主机点云数据UDP目的端口
+    data[7]=0xd7;//主机点云数据UDP目的端口
     data[8]=0xd8;//主机控制指令UDP目的端口
     data[9]=0xd6;//主机控制指令UDP目的端口
     data[10]=0xd8;//主机控制IMU UDP目的端口
@@ -247,5 +271,5 @@ void socket_M::needData()
     //msg = QByteArray::fromHex(cmd.toLatin1());//测试通过
     uSocket->writeDatagram(msg, QHostAddress("192.168.1.20"), 65000);
 
-    heartTimer->stop();
+
 }

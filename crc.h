@@ -1,4 +1,4 @@
-#ifndef CRC_H
+﻿#ifndef CRC_H
 #define CRC_H
 #include <ui_mainwindow.h>
 #include <QObject>
@@ -34,7 +34,7 @@ signals:
    void sendDeviceMSG(DEVICEMSG);
    void sendNeedHand(bool);
    void sendHandbool(bool);
-   void sendCloudData2GL(cloudData);
+
 public slots:
    void receiveData(QByteArray);
 

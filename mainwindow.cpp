@@ -10,14 +10,18 @@ MainWindow::MainWindow(QWidget *parent)
     CRC->getUI(*ui);
     UDP_MID40=new socket_M();
     GL=new openglShow;
+    CPT =new cloudPointThread;
     connect(UDP_MID40,SIGNAL(sendDevicdMSG2Main(DEVICEMSG)),this,SLOT(receiveDeviceMSGFromSocket(DEVICEMSG)));
     connect(UDP_MID40,SIGNAL(sendHandbool2M(bool)),this,SLOT(receiveHandbool(bool)));
     connect(UDP_MID40,SIGNAL(sendData2CRC(QByteArray)),CRC,SLOT(receiveData(QByteArray)));
+    connect(UDP_MID40,SIGNAL(sendData2CP(QByteArray)),CPT,SLOT(reveiveCPFromSOCKET(QByteArray)));
 
     connect(CRC,SIGNAL(sendDeviceMSG(DEVICEMSG)),UDP_MID40,SLOT(receiveDeviceMSG(DEVICEMSG)));
     connect(CRC,SIGNAL(sendNeedHand(bool)),UDP_MID40,SLOT(receivesendNeedHand(bool)));
     connect(CRC,SIGNAL(sendHandbool(bool)),UDP_MID40,SLOT(receiveHandbool(bool)));
-    connect(CRC,SIGNAL(sendCloudData2GL(cloudData)),GL,SLOT(receivePointCloud(cloudData)));
+    connect(CPT,SIGNAL(sendCloudData2GL(cloudData)),GL,SLOT(receivePointCloud(cloudData)));
+
+   // connect(ui->openGLWidget,SIGNAL(wheel2Update()),this,SLOT(updateNow()));
 
 }
 
@@ -66,4 +70,9 @@ void MainWindow::on_pushButton_clicked()
 {
     QByteArray data;
     CRC->analysisPointCloud(data);
+}
+
+void MainWindow::wheelEvent(QWheelEvent *event)
+{
+
 }
