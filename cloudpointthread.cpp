@@ -1,15 +1,16 @@
 ﻿#include "cloudpointthread.h"
 QByteArray pointData;
 std::mutex cpmutex;
+int packageLength=2000;
+int collectTime;
+QList<float>cpx,cpy,cpz,cpreflect;
 cloudPointThread::cloudPointThread()
 {
-
+   collectTime=0;
 }
 void cloudPointThread::run()
 {
 
-
-    cloudData  CD;
     cpmutex.lock();
     for(int i=0;i<100;i++)
    {
@@ -24,16 +25,33 @@ void cloudPointThread::run()
      std::reverse(x.begin(), x.end());
      std::reverse(y.begin(), y.end());
      std::reverse(z.begin(), z.end());
-     CD.x[i]=Hex3Dec(x.toHex());
-     CD.y[i]=Hex3Dec(y.toHex());
-     CD.z[i]=Hex3Dec(z.toHex());
-     CD.reflect[i]=Hex3Dec(R.toHex());
+     cpx.append(Hex3Dec(x.toHex()));
+     cpy.append(Hex3Dec(y.toHex()));
+     cpz.append(Hex3Dec(z.toHex()));
+     cpreflect.append(Hex3Dec(R.toHex()));
+//     CD.y[i]=Hex3Dec(y.toHex());
+//     CD.z[i]=Hex3Dec(z.toHex());
+//     CD.reflect[i]=Hex3Dec(R.toHex());
+     collectTime+=100;
    }
      cpmutex.unlock();
-     emit sendCloudData2GL(CD);
+     if(collectTime==packageLength)
+     {
+         emit sendCloudData2GL(cpx,cpy,cpz,cpreflect);
+         collectTime=0;
+     }
+
+
 }
 void cloudPointThread::reveiveCPFromSOCKET(QByteArray da)
 {
+    if(collectTime==0)
+    {
+        cpx.clear();
+        cpy.clear();
+        cpz.clear();
+        cpreflect.clear();
+    }
     cpmutex.lock();
     pointData =da;
     cpmutex.unlock();

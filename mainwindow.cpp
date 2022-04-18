@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(CRC,SIGNAL(sendDeviceMSG(DEVICEMSG)),UDP_MID40,SLOT(receiveDeviceMSG(DEVICEMSG)));
     connect(CRC,SIGNAL(sendNeedHand(bool)),UDP_MID40,SLOT(receivesendNeedHand(bool)));
     connect(CRC,SIGNAL(sendHandbool(bool)),UDP_MID40,SLOT(receiveHandbool(bool)));
-    connect(CPT,SIGNAL(sendCloudData2GL(cloudData)),GL,SLOT(receivePointCloud(cloudData)));
+    connect(CPT,SIGNAL(sendCloudData2GL(QList<float>,QList<float>,QList<float>,QList<float>)),GL,SLOT(receivePointCloud(QList<float>,QList<float>,QList<float>,QList<float>)));
 
    // connect(ui->openGLWidget,SIGNAL(wheel2Update()),this,SLOT(updateNow()));
 

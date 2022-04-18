@@ -40,23 +40,18 @@ openglShow::openglShow(QWidget *parent) : QOpenGLWidget(parent)
   // connect(this,SIGNAL(wheel2Update(QMouseEvent *event)),this,SLOT(mouseReleaseEvent(QMouseEvent *event)));
 }
 int CCC=0;
-void openglShow::receivePointCloud(cloudData da)
+void openglShow::receivePointCloud(QList<float>x,QList<float>y,QList<float>z,QList<float>R)
 {
 
-    cloudData sk=da;
-    MTX.lock();
 
-    for (int i=0;i<100;i++)
-    {
-        px.append(sk.x[i]);
-        py.append(sk.y[i]);
-        pz.append(sk.z[i]);
-        preflect.append(sk.reflect[i]);
-    }
-    CCC+=1;
+    MTX.lock();
+    px=x;
+    py=y;
+    pz=z;
+    preflect=R;
     qDebug()<<CCC;
     MTX.unlock();
-   //this->update();
+    this->update();
 
 };
 void  openglShow::initializeGL()

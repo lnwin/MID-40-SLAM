@@ -12,7 +12,7 @@ public:
     cloudPointThread();
 
 signals:
-     void sendCloudData2GL(cloudData);
+     void sendCloudData2GL(QList<float>,QList<float>,QList<float>,QList<float>);
 public slots:
 
     void reveiveCPFromSOCKET(QByteArray);

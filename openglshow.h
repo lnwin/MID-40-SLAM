@@ -1,4 +1,4 @@
-#ifndef OPENGLSHOW_H
+﻿#ifndef OPENGLSHOW_H
 #define OPENGLSHOW_H
 
 #include <QObject>
@@ -35,7 +35,7 @@ signals:
 
 public slots:
 
-    void receivePointCloud(cloudData);
+    void receivePointCloud(QList<float>,QList<float>,QList<float>,QList<float>);
 
 private:
     int  viewport[4];
