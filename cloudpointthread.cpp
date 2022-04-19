@@ -64,37 +64,43 @@ void cloudPointThread::reveiveCPFromSOCKET(QByteArray da)
 
 float cloudPointThread::Hex3Dec(QString hex)
 {
-      bool ok;
-      float finaldata;
-      long long a =hex.toLongLong(&ok,16);
-      QString bin =QString::number(a,2);
-      int datalength =bin.length();
-      if(datalength%4==0)
-      {
-             for (int i=0;i<datalength;i++)
-             {
-                 if(bin[i]=="0")
-                 {
-                     bin[i]='1';
-                 }
-                 else
-                 {
-                     bin[i]='0';
-                 }
+    bool ok;
+    float finaldata;
+    long long a =hex.toLongLong(&ok,16);
+    QString bin =QString::number(a,2);
+    int datalength =bin.length();
+   // qDebug()<<bin.length();
+  //  qDebug()<<bin;
 
-             }
+        if(datalength==32)
+        {
+           for (int i=0;i<datalength;i++)
+           {
+               if(bin[i]=="0")
+               {
+                   bin[i]='1';
+               }
+               else
+               {
+                   bin[i]='0';
+               }
 
-             finaldata = (double)(-(bin.toInt(&ok,2)+1));
-             return finaldata;
-         }
+           }
 
-         else
-         {
-             QString data =hex;
-             finaldata =(double)data.toInt(&ok,16);
-             return finaldata;
+           finaldata = (double)(-(bin.toInt(&ok,2)+1));
+           return finaldata;
 
-         }
+        }
+
+
+
+       else
+     {
+           QString data =hex;
+           finaldata =(double)data.toLongLong(&ok,16);
+           return finaldata;
+
+     }
 
 
 }

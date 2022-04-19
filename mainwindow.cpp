@@ -72,8 +72,11 @@ float Hex3Dec(QString hex)
       long long a =hex.toLongLong(&ok,16);
       QString bin =QString::number(a,2);
       int datalength =bin.length();
-      if(datalength%4==0)
-      {
+     // qDebug()<<bin.length();
+    //  qDebug()<<bin;
+
+          if(datalength==32)
+          {
              for (int i=0;i<datalength;i++)
              {
                  if(bin[i]=="0")
@@ -89,18 +92,21 @@ float Hex3Dec(QString hex)
 
              finaldata = (double)(-(bin.toInt(&ok,2)+1));
              return finaldata;
-         }
+
+          }
+
+
 
          else
-         {
+       {
              QString data =hex;
-             finaldata =(double)data.toInt(&ok,16);
+             finaldata =(double)data.toLongLong(&ok,16);
              return finaldata;
 
-         }
+       }
 
 
-}
+};
 void MainWindow::on_pushButton_clicked()
 {
 
@@ -109,9 +115,10 @@ void MainWindow::on_pushButton_clicked()
     test[1]=0x00;//协议版本, 当前为1
     test[2]=0x08;//数据帧长度,
     test[3]=0xfe;//数据帧长度,
+    bool ok;
     qDebug()<<Hex3Dec(test.toHex());
+    qDebug()<<"self"<<test.toHex().toLongLong(&ok,16);
   //  GL->savecloud();
-
 
 }
 
