@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(CRC,SIGNAL(sendDeviceMSG(DEVICEMSG)),UDP_MID40,SLOT(receiveDeviceMSG(DEVICEMSG)));
     connect(CRC,SIGNAL(sendNeedHand(bool)),UDP_MID40,SLOT(receivesendNeedHand(bool)));
     connect(CRC,SIGNAL(sendHandbool(bool)),UDP_MID40,SLOT(receiveHandbool(bool)));
-    connect(CPT,SIGNAL(sendCloudData2GL(QList<float>,QList<float>,QList<float>,QList<float>)),GL,SLOT(receivePointCloud(QList<float>,QList<float>,QList<float>,QList<float>)));
+    connect(CPT,SIGNAL(sendCloudData2GL(cloudData)),GL,SLOT(receivePointCloud(cloudData)));
 
    // connect(ui->openGLWidget,SIGNAL(wheel2Update()),this,SLOT(updateNow()));
 
@@ -65,14 +65,58 @@ void MainWindow::on_startSample_clicked()
 
 
 }
+float Hex3Dec(QString hex)
+{
+      bool ok;
+      float finaldata;
+      long long a =hex.toLongLong(&ok,16);
+      QString bin =QString::number(a,2);
+      int datalength =bin.length();
+      if(datalength%4==0)
+      {
+             for (int i=0;i<datalength;i++)
+             {
+                 if(bin[i]=="0")
+                 {
+                     bin[i]='1';
+                 }
+                 else
+                 {
+                     bin[i]='0';
+                 }
 
+             }
+
+             finaldata = (double)(-(bin.toInt(&ok,2)+1));
+             return finaldata;
+         }
+
+         else
+         {
+             QString data =hex;
+             finaldata =(double)data.toInt(&ok,16);
+             return finaldata;
+
+         }
+
+
+}
 void MainWindow::on_pushButton_clicked()
 {
-    QByteArray data;
-    CRC->analysisPointCloud(data);
+
+    QByteArray test;
+    test[0]=0x00;//起始字节，固定为 0xAA
+    test[1]=0x00;//协议版本, 当前为1
+    test[2]=0x08;//数据帧长度,
+    test[3]=0xfe;//数据帧长度,
+    qDebug()<<Hex3Dec(test.toHex());
+  //  GL->savecloud();
+
+
 }
 
 void MainWindow::wheelEvent(QWheelEvent *event)
 {
 
 }
+

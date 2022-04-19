@@ -7,6 +7,8 @@
 #include <openglshow.h>
 #include "cloudpointthread.h"
 #include  <localStruct.h>
+#include <qlist.h>
+#include <QMetaType>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE

@@ -40,18 +40,28 @@ openglShow::openglShow(QWidget *parent) : QOpenGLWidget(parent)
   // connect(this,SIGNAL(wheel2Update(QMouseEvent *event)),this,SLOT(mouseReleaseEvent(QMouseEvent *event)));
 }
 int CCC=0;
-void openglShow::receivePointCloud(QList<float>x,QList<float>y,QList<float>z,QList<float>R)
+void openglShow::receivePointCloud(cloudData Cd)
 {
 
 
     MTX.lock();
-    px=x;
-    py=y;
-    pz=z;
-    preflect=R;
-    qDebug()<<CCC;
+    for (int i=0;i<2000;i++)
+    {
+        px.append(Cd.x[i]);
+        py.append(Cd.y[i]);
+        pz.append(Cd.z[i]);
+//        preflect.append(Cd.reflect[i]);
+        cloudP[i+cornernumber][0]=Cd.x[i];
+        cloudP[i+cornernumber][1]=Cd.y[i];
+        cloudP[i+cornernumber][2]=Cd.z[i];
+//        px[i]= (Cd.x[i]);
+//        px[i]=(Cd.y[i]);
+//        px[i]=(Cd.z[i]);
+//        preflect[i]=(Cd.reflect[i]);
+    }
+    cornernumber +=2000;
     MTX.unlock();
-    this->update();
+   // this->update();
 
 };
 void  openglShow::initializeGL()
@@ -110,13 +120,15 @@ void  openglShow::paintGL()
     glPointSize(1);
     glBegin(GL_POINTS);
     MTX.lock();
-    if(px.length()>70)
+//    if(px.length()>70)
+//    {
+    for (int i = 0; i <cornernumber; i++)
     {
-    for (int i = 0; i < px.length(); i++)
-    {
-       glVertex3f(px[i],py[i],pz[i]);
+      // glVertex3f(px[i],py[i],pz[i]);
+      // glVertex4f()
+        glVertex3fv(cloudP[i]);
     }
-    }
+//    }
     MTX.unlock();
     glEnd();
     //=====================
@@ -289,3 +301,34 @@ void  openglShow::drawball(float cx,float cy,float cz,float radius,float M,float
 
 };
 
+void openglShow::savecloud()
+{
+     QString  filepath="D:/clouds/mid40cloud.txt";
+       QFile cloudfile(filepath);
+       QTextStream stream(&cloudfile);
+       if(!cloudfile.exists())
+
+               {
+                    QDir *folder = new QDir;
+                    folder->mkdir("D:/clouds");
+                    cloudfile.open(QIODevice::WriteOnly | QIODevice::Text);
+                    for( int i=0;i<px.length(); i++)
+                    {
+                         stream<< QString::number( px[i]) +","+QString::number( py[i])+","+QString::number(pz[i])<<"\n";
+
+                    }
+
+                }
+       else
+       {
+           cloudfile.open(QIODevice::WriteOnly | QIODevice::Text|QIODevice::Append);
+           for( int i=0;i<px.length(); i++)
+           {
+               stream<< QString::number( px[i]) +","+QString::number( py[i])+","+QString::number(pz[i])<<"\n";
+
+
+            }
+
+       }
+       cloudfile.close();
+}

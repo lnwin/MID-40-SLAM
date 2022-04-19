@@ -19,6 +19,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <mutex>
+#include <qlist.h>
+#include <QMetaType>
 class openglShow : public QOpenGLWidget,protected QOpenGLFunctions_4_5_Core
 {
     Q_OBJECT
@@ -30,12 +32,15 @@ public:
     void initializeGL() override;
     void paintGL() override;
     void resizeGL(int w, int h) override;
+
+    void savecloud();
+
 signals:
 
 
 public slots:
 
-    void receivePointCloud(QList<float>,QList<float>,QList<float>,QList<float>);
+    void receivePointCloud(cloudData);
 
 private:
     int  viewport[4];

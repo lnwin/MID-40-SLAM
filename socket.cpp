@@ -52,7 +52,7 @@ void socket_M::readCloudP()
              QString HEAD =ba.mid(0,1).toHex();
             if(HEAD=="05")
             {
-               // qDebug()<<";";
+                //qDebug()<<";";
                 emit sendData2CP(ba);
 
             }

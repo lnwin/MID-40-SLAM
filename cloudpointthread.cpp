@@ -3,7 +3,8 @@ QByteArray pointData;
 std::mutex cpmutex;
 int packageLength=2000;
 int collectTime;
-QList<float>cpx,cpy,cpz,cpreflect;
+cloudData CD;
+
 cloudPointThread::cloudPointThread()
 {
    collectTime=0;
@@ -11,51 +12,54 @@ cloudPointThread::cloudPointThread()
 void cloudPointThread::run()
 {
 
+
     cpmutex.lock();
     for(int i=0;i<100;i++)
    {
-     QByteArray x;
-     QByteArray y;
-     QByteArray z;
-     QByteArray R;
-     x=pointData.mid(18+i,4);
-     y=pointData.mid(22+i,4);
-     z=pointData.mid(26+i,4);
-     R=pointData.mid(30+i,1);
+     QByteArray x,y,z,R;
+     x=pointData.mid(18+i*13,4);
+     y=pointData.mid(22+i*13,4);
+     z=pointData.mid(26+i*13,4);
+     R=pointData.mid(30+i*13,1);
      std::reverse(x.begin(), x.end());
      std::reverse(y.begin(), y.end());
      std::reverse(z.begin(), z.end());
-     cpx.append(Hex3Dec(x.toHex()));
-     cpy.append(Hex3Dec(y.toHex()));
-     cpz.append(Hex3Dec(z.toHex()));
-     cpreflect.append(Hex3Dec(R.toHex()));
-//     CD.y[i]=Hex3Dec(y.toHex());
-//     CD.z[i]=Hex3Dec(z.toHex());
-//     CD.reflect[i]=Hex3Dec(R.toHex());
-     collectTime+=100;
-   }
-     cpmutex.unlock();
+//     cpx.append(Hex3Dec(x.toHex()));
+//     cpy.append(Hex3Dec(y.toHex()));
+//     cpz.append(Hex3Dec(z.toHex()));
+//     cpreflect.append(Hex3Dec(R.toHex()));
+     CD.x[collectTime]=Hex3Dec(x.toHex());
+     CD.y[collectTime]=Hex3Dec(y.toHex());
+     CD.z[collectTime]=Hex3Dec(z.toHex());
+     CD.reflect[collectTime]=Hex3Dec(R.toHex());
+   //  qDebug()<<Hex3Dec(x.toHex());
+     collectTime+=1;
      if(collectTime==packageLength)
      {
-         emit sendCloudData2GL(cpx,cpy,cpz,cpreflect);
+         qDebug()<<"ok"<<collectTime;
+         emit sendCloudData2GL(CD);
+         Delay_MSec(20);
          collectTime=0;
      }
+
+   }
+
+
+     cpmutex.unlock();
+    // done=true;
+
 
 
 }
 void cloudPointThread::reveiveCPFromSOCKET(QByteArray da)
 {
-    if(collectTime==0)
-    {
-        cpx.clear();
-        cpy.clear();
-        cpz.clear();
-        cpreflect.clear();
-    }
+
     cpmutex.lock();
     pointData =da;
     cpmutex.unlock();
     this->start();
+
+   // qDebug()<<"RCP";
 }
 
 float cloudPointThread::Hex3Dec(QString hex)
@@ -93,4 +97,12 @@ float cloudPointThread::Hex3Dec(QString hex)
          }
 
 
+}
+void cloudPointThread::Delay_MSec(unsigned int msec)//-----------------------------------------��ʱ����
+{
+    QTime _Timer = QTime::currentTime().addMSecs(msec);
+
+    while( QTime::currentTime() < _Timer )
+
+    QCoreApplication::processEvents(QEventLoop::AllEvents, 1);
 }

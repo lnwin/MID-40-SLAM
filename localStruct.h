@@ -1,4 +1,4 @@
-#ifndef LOCALSTRUCT_H
+﻿#ifndef LOCALSTRUCT_H
 #define LOCALSTRUCT_H
 #include <QMetaType>
 struct DEVICEMSG
@@ -11,12 +11,23 @@ Q_DECLARE_METATYPE(DEVICEMSG);
 struct cloudData
 {
 
-    float x[100];
-    float y[100];
-    float z[100];
-    float reflect[100];
+    float x[2000];
+    float y[2000];
+    float z[2000];
+    float reflect[2000];
 
 
 };
 Q_DECLARE_METATYPE(cloudData);
+struct cloudData2show
+{
+
+    float x[2000];
+    float y[2000];
+    float z[2000];
+    float reflect[2000];
+
+
+};
+Q_DECLARE_METATYPE(cloudData2show);
 #endif // LOCALSTRUCT_H
