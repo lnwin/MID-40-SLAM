@@ -110,15 +110,15 @@ float Hex3Dec(QString hex)
 void MainWindow::on_pushButton_clicked()
 {
 
-    QByteArray test;
-    test[0]=0x00;//起始字节，固定为 0xAA
-    test[1]=0x00;//协议版本, 当前为1
-    test[2]=0x08;//数据帧长度,
-    test[3]=0xfe;//数据帧长度,
-    bool ok;
-    qDebug()<<Hex3Dec(test.toHex());
-    qDebug()<<"self"<<test.toHex().toLongLong(&ok,16);
-  //  GL->savecloud();
+//    QByteArray test;
+//    test[0]=0x00;//起始字节，固定为 0xAA
+//    test[1]=0x00;//协议版本, 当前为1
+//    test[2]=0x08;//数据帧长度,
+//    test[3]=0xfe;//数据帧长度,
+//    bool ok;
+//    qDebug()<<Hex3Dec(test.toHex());
+//    qDebug()<<"self"<<test.toHex().toLongLong(&ok,16);
+    GL->savecloud();
 
 }
 

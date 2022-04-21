@@ -44,23 +44,24 @@ void openglShow::receivePointCloud(cloudData Cd)
 {
 
 
-    MTX.lock();
-    for (int i=0;i<2000;i++)
-    {
-        px.append(Cd.x[i]);
-        py.append(Cd.y[i]);
-        pz.append(Cd.z[i]);
+//    MTX.lock();
+//    for (int i=0;i<2000;i++)
+//    {
+//        px.append(Cd.x[i]);
+//        py.append(Cd.y[i]);
+//        pz.append(Cd.z[i]);
 //        preflect.append(Cd.reflect[i]);
-        cloudP[i+cornernumber][0]=Cd.x[i];
-        cloudP[i+cornernumber][1]=Cd.y[i];
-        cloudP[i+cornernumber][2]=Cd.z[i];
-//        px[i]= (Cd.x[i]);
-//        px[i]=(Cd.y[i]);
-//        px[i]=(Cd.z[i]);
-//        preflect[i]=(Cd.reflect[i]);
-    }
-    cornernumber +=2000;
-    MTX.unlock();
+////        preflect.append(Cd.reflect[i]);
+//        cloudP[i+cornernumber][0]=Cd.x[i];
+//        cloudP[i+cornernumber][1]=Cd.y[i];
+//        cloudP[i+cornernumber][2]=Cd.z[i];
+////        px[i]= (Cd.x[i]);
+////        px[i]=(Cd.y[i]);
+////        px[i]=(Cd.z[i]);
+
+//    }
+//    cornernumber +=2000;
+//    MTX.unlock();
    // this->update();
 
 };
@@ -150,7 +151,7 @@ void  openglShow::paintGL()
     glPopMatrix();
     glPopAttrib();
     //=====================
-    this->update();
+  //  this->update();
 
 
 };
@@ -314,7 +315,7 @@ void openglShow::savecloud()
                     cloudfile.open(QIODevice::WriteOnly | QIODevice::Text);
                     for( int i=0;i<px.length(); i++)
                     {
-                         stream<< QString::number( px[i]) +","+QString::number( py[i])+","+QString::number(pz[i])<<"\n";
+                         stream<< QString::number( px[i]) +","+QString::number( py[i])+","+QString::number(pz[i])+","+QString::number(preflect[i])<<"\n";
 
                     }
 
@@ -324,7 +325,7 @@ void openglShow::savecloud()
            cloudfile.open(QIODevice::WriteOnly | QIODevice::Text|QIODevice::Append);
            for( int i=0;i<px.length(); i++)
            {
-               stream<< QString::number( px[i]) +","+QString::number( py[i])+","+QString::number(pz[i])<<"\n";
+               stream<< QString::number( px[i]) +","+QString::number( py[i])+","+QString::number(pz[i])+","+QString::number(preflect[i])<<"\n";
 
 
             }

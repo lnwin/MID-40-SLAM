@@ -24,20 +24,22 @@ void cloudPointThread::run()
      std::reverse(x.begin(), x.end());
      std::reverse(y.begin(), y.end());
      std::reverse(z.begin(), z.end());
-//     cpx.append(Hex3Dec(x.toHex()));
-//     cpy.append(Hex3Dec(y.toHex()));
-//     cpz.append(Hex3Dec(z.toHex()));
-//     cpreflect.append(Hex3Dec(R.toHex()));
+//   cpx.append(Hex3Dec(x.toHex()));
+//   cpy.append(Hex3Dec(y.toHex()));
+//   cpz.append(Hex3Dec(z.toHex()));
+//   cpreflect.append(Hex3Dec(R.toHex()));
      CD.x[collectTime]=Hex3Dec(x.toHex());
      CD.y[collectTime]=Hex3Dec(y.toHex());
      CD.z[collectTime]=Hex3Dec(z.toHex());
-     CD.reflect[collectTime]=Hex3Dec(R.toHex());
+     bool ok;
+     CD.reflect[collectTime]=R.toHex().toLongLong(&ok,16);
    //  qDebug()<<Hex3Dec(x.toHex());
      collectTime+=1;
      if(collectTime==packageLength)
      {
-         qDebug()<<"ok"<<collectTime;
+        // qDebug()<<"ok"<<collectTime;
          emit sendCloudData2GL(CD);
+         qDebug()<<CD.reflect[0];
          Delay_MSec(20);
          collectTime=0;
      }
