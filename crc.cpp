@@ -343,10 +343,10 @@ void crc::receiveData(QByteArray ba)
 };
 void crc::showDataOnUi(Ui::MainWindow ui,cloudData ba)
 {
-    cloudData AK=ba;
-    qDebug()<<AK.x[0];
-    qDebug()<<AK.x[0];
-    qDebug()<<AK.x[0];
+//    cloudData AK=ba;
+//    qDebug()<<AK.x[0];
+//    qDebug()<<AK.x[0];
+//    qDebug()<<AK.x[0];
    // ui.point_x->setText(QString::number(AK.x[0]));
    // ui.point_y->setText(QString::number(AK.y[0]));
     //ui.point_z->setText(QString::number(AK.z[0]));

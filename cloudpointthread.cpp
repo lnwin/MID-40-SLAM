@@ -39,7 +39,7 @@ void cloudPointThread::run()
      {
         // qDebug()<<"ok"<<collectTime;
          emit sendCloudData2GL(CD);
-         qDebug()<<CD.reflect[0];
+       //  qDebug()<<CD.reflect[0];
          Delay_MSec(20);
          collectTime=0;
      }

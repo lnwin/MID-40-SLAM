@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     CRC=new crc();
     CRC->getUI(*ui);
     UDP_MID40=new socket_M();
+    UDP_MID40->moveToThread(&udpThread);
     GL=new openglShow;
     CPT =new cloudPointThread;
     connect(UDP_MID40,SIGNAL(sendDevicdMSG2Main(DEVICEMSG)),this,SLOT(receiveDeviceMSGFromSocket(DEVICEMSG)));
@@ -22,11 +23,16 @@ MainWindow::MainWindow(QWidget *parent)
     connect(CPT,SIGNAL(sendCloudData2GL(cloudData)),GL,SLOT(receivePointCloud(cloudData)));
 
    // connect(ui->openGLWidget,SIGNAL(wheel2Update()),this,SLOT(updateNow()));
+    connect(&udpThread, &QThread::started, UDP_MID40, &socket_M::onInitData);
+  //  connect(&udpThread, &QThread::finished, UDP_MID40, &socket_M::deleteLater);
+    udpThread.start();
 
 }
 
 MainWindow::~MainWindow()
 {
+    udpThread.quit();
+    udpThread.wait();
     delete ui;
 }
 

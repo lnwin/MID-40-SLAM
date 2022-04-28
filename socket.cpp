@@ -2,21 +2,25 @@
 
 socket_M::socket_M()
 {
-        SOC_CRC = new crc;
-        uSocket = new QUdpSocket;
-        uSocketCloudP = new QUdpSocket;
-        heartTimer =new QTimer;
-      //  GL =new openglShow;
-        uSocket->bind(QHostAddress("192.168.1.77"), 55000);
-        uSocketCloudP->bind(QHostAddress("192.168.1.77"), 55100);
-        heartTimer->setInterval(1000);
 
-        connect(uSocket, SIGNAL(readyRead()), this, SLOT(receive()));
-        connect(uSocketCloudP, SIGNAL(readyRead()), this, SLOT(readCloudP()));
-        connect(heartTimer, SIGNAL(timeout()), this, SLOT(sendHeartPackage()));
 
-        qDebug()<<"UDP success";
-
+}
+void socket_M::onInitData()
+{
+    SOC_CRC = new crc;
+    uSocket = new QUdpSocket;
+    uSocketCloudP = new QUdpSocket;
+    heartTimer =new QTimer;
+  // GL =new openglShow;
+    uSocket->bind(QHostAddress("192.168.1.77"), 55000);
+    uSocketCloudP->bind(QHostAddress("192.168.1.77"), 55100);
+    heartTimer->setInterval(1000);
+    //uSocket->moveToThread(&socthread);
+    connect(uSocket, SIGNAL(readyRead()), this, SLOT(receive()));
+    connect(uSocketCloudP, SIGNAL(readyRead()), this, SLOT(readCloudP()));
+    connect(heartTimer, SIGNAL(timeout()), this, SLOT(sendHeartPackage()));
+   // socthread.start();
+    qDebug()<<"UDP success";
 }
 void socket_M::receive()
 {
@@ -32,7 +36,7 @@ void socket_M::receive()
            emit sendData2CRC(ba);
 //           if(SOC_CRC->checkCRC(ba))
 //           {
-//               //qDebug()<<"socket check passed";
+            //  qDebug()<<"socket check passed";
 //           }
        }
 
@@ -220,7 +224,7 @@ void socket_M::connectMID_40()
     QByteArray sk;
     sk.append(head[3]);
     sk.append(head[2]);
-    qDebug()<< sk.toHex().toInt(0,16); //测试通过
+   // qDebug()<< sk.toHex().toInt(0,16); //测试通过
 
 }
 void socket_M::needData()

@@ -37,6 +37,7 @@ public:
     crc *CRC;
     openglShow *GL;
     cloudPointThread*CPT;
+    QThread udpThread;
 protected:
     void wheelEvent(QWheelEvent *event);
 };

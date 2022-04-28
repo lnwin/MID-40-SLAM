@@ -22,6 +22,7 @@ public:
     void connectMID_40();
     void needData();    
     void sendHandPackage();
+    QThread socthread;
 
 public slots:
     void receive();
@@ -30,6 +31,7 @@ public slots:
     void sendHeartPackage();
     void receiveHandbool(bool);
     void receivesendNeedHand(bool);
+    void onInitData();
 
 signals:
 

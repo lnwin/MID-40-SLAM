@@ -44,25 +44,25 @@ void openglShow::receivePointCloud(cloudData Cd)
 {
 
 
-//    MTX.lock();
-//    for (int i=0;i<2000;i++)
-//    {
-//        px.append(Cd.x[i]);
-//        py.append(Cd.y[i]);
-//        pz.append(Cd.z[i]);
+    MTX.lock();
+    for (int i=0;i<2000;i++)
+    {
+        px.append(Cd.x[i]);
+        py.append(Cd.y[i]);
+        pz.append(Cd.z[i]);
+        preflect.append(Cd.reflect[i]);
 //        preflect.append(Cd.reflect[i]);
-////        preflect.append(Cd.reflect[i]);
-//        cloudP[i+cornernumber][0]=Cd.x[i];
-//        cloudP[i+cornernumber][1]=Cd.y[i];
-//        cloudP[i+cornernumber][2]=Cd.z[i];
-////        px[i]= (Cd.x[i]);
-////        px[i]=(Cd.y[i]);
-////        px[i]=(Cd.z[i]);
+        cloudP[i+cornernumber][0]=Cd.x[i];
+        cloudP[i+cornernumber][1]=Cd.y[i];
+        cloudP[i+cornernumber][2]=Cd.z[i];
+//        px[i]= (Cd.x[i]);
+//        px[i]=(Cd.y[i]);
+//        px[i]=(Cd.z[i]);
 
-//    }
-//    cornernumber +=2000;
-//    MTX.unlock();
-   // this->update();
+    }
+    cornernumber +=2000;
+    MTX.unlock();
+    this->update();
 
 };
 void  openglShow::initializeGL()
@@ -151,7 +151,7 @@ void  openglShow::paintGL()
     glPopMatrix();
     glPopAttrib();
     //=====================
-  //  this->update();
+    this->update();
 
 
 };
