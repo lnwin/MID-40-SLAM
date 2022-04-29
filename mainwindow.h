@@ -26,6 +26,7 @@ public slots:
     void on_connectMID40_clicked();
     void receiveDeviceMSGFromSocket(DEVICEMSG);
     void receiveHandbool(bool);
+    void receivebool2M(bool);
 private slots:
     void on_startSample_clicked();
     void on_pushButton_clicked();
@@ -38,6 +39,7 @@ public:
     openglShow *GL;
     cloudPointThread*CPT;
     QThread udpThread;
+    QThread cldThread;
 protected:
     void wheelEvent(QWheelEvent *event);
 };

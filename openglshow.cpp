@@ -4,7 +4,7 @@ const float PI =3.1415926;
 float GLwidth,GLheight;
 glm::vec3 cameraPos = glm::vec3(100.0f, 0.0f, 50.0f);
 float FOV=45;
-float yaw=0,pitch=0,roll;//????¦Ë??
+float yaw=0,pitch=0,roll=0;//????¦Ë??
 float Ddx=0,Ddy=0;
 float R=1000;
 float Center_x=0,Center_y=0,Center_z=300;
@@ -29,7 +29,7 @@ int  cornernumber=0;
 openglShow::openglShow()
 {
 
-
+  Csins=new SINS();
 }
 openglShow::~openglShow()
 {
@@ -216,11 +216,22 @@ void  openglShow::mouseMoveEvent(QMouseEvent *event)
       pitch =  89.0f;
     if(pitch < -89.0f)
       pitch = -89.0f;
-//  cameraPos.x= cos(glm::radians(yaw)) * cos(glm::radians(pitch))*30000;
+
     cameraPos.y =sin(glm::radians(pitch))*R+Target_y;
-//  cameraPos.z= sin(glm::radians(yaw)) * cos(glm::radians(pitch))*30000;
     cameraPos.x= R*cos(glm::radians(pitch))* cos(glm::radians(yaw)) +Target_x;
     cameraPos.z= R*cos(glm::radians(pitch))*sin(glm::radians(yaw))+Target_z;
+
+//    Vector3d CAM(cameraPos.x,cameraPos.y, cameraPos.z);
+////    CAM.x()= cameraPos.x;
+////    CAM.y()= cameraPos.y;
+////    CAM.z()= cameraPos.z;
+
+//    Vector3d AK = Csins->Quaternion_Rotation(CAM,pitch,yaw,roll);
+
+//    cameraPos.x=AK.x()+Target_y;
+//    cameraPos.y=AK.y()+Target_x;
+//    cameraPos.z=AK.z()+Target_z;
+
     this->update();
 };
 void  openglShow::wheelEvent(QWheelEvent*event)

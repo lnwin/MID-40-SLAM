@@ -21,6 +21,7 @@
 #include <mutex>
 #include <qlist.h>
 #include <QMetaType>
+#include <sins.h>
 class openglShow : public QOpenGLWidget,protected QOpenGLFunctions_4_5_Core
 {
     Q_OBJECT
@@ -44,6 +45,7 @@ public slots:
 private:
     int  viewport[4];
     void drawball(float cx,float cy,float cz,float radius,float M,float N);
+    SINS *Csins ;
 protected:
       void  mousePressEvent(QMouseEvent *event);
       void  mouseReleaseEvent(QMouseEvent *event);

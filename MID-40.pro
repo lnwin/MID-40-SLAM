@@ -27,7 +27,8 @@ SOURCES += \
     openglshow.cpp \
     socket.cpp \
     Math3d.cpp \
-    cloudpointthread.cpp
+    cloudpointthread.cpp \
+    sins.cpp
 
 HEADERS += \
     crc.h \
@@ -36,7 +37,8 @@ HEADERS += \
     openglshow.h \
     socket.h \
     math3d.h \
-    cloudpointthread.h
+    cloudpointthread.h \
+    sins.h
 
 FORMS += \
     mainwindow.ui

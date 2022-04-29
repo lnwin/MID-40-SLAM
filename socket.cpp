@@ -277,3 +277,52 @@ void socket_M::needData()
 
 
 }
+void socket_M::stopData()
+{
+    QByteArray msg;
+    QByteArray data;
+    data[0]=0x00;
+    data[1]=0x04;
+    data[2]=0x00;//停止采样
+
+
+    QByteArray head;
+    head[0]=0xaa;//起始字节，固定为 0xAA
+    head[1]=0x01;//协议版本, 当前为1
+    head[2]=0x10;//数据帧长度,
+    head[3]=0x00;//数据帧长度,
+    head[4]=0x00;//命令类型
+    head[5]=0x00;//数据帧序列号
+    head[6]=0x00;//数据帧序列号
+    uint8_t MESG_head[7];
+    for(int i=0;i<7;i++)
+    {
+        MESG_head[i]=(uint8_t)head.at(i);
+    }
+    QByteArray crc16;
+    crc16=QByteArray::fromHex(QByteArray::number(SOC_CRC->FastCRC16(MESG_head,7), 16));
+
+   // qDebug()<<QByteArray::number(SOC_CRC->FastCRC16(MESG_head,7), 16);
+   // msg[0]=QByteArray::number(SOC_CRC->FastCRC16(MESG_head,7),16).at(2);
+
+   // qDebug()<<"crc16"<<crc16;
+    msg.append(head);
+    msg.append(crc16.at(1));
+    msg.append(crc16.at(0));
+    msg.append(data);
+    uint8_t MESG_all[12];
+    for(int i=0;i<12;i++)
+    {
+        MESG_all[i]=(uint8_t)msg.at(i);
+    }
+    QByteArray crc32;
+    crc32=QByteArray::fromHex(QByteArray::number(SOC_CRC->FastCRC32(MESG_all,12),16));
+   // qDebug()<<"crc32"<<crc32;
+    msg.append(crc32.at(3));
+    msg.append(crc32.at(2));
+    msg.append(crc32.at(1));
+    msg.append(crc32.at(0));
+    //msg = QByteArray::fromHex(cmd.toLatin1());//测试通过
+    uSocket->writeDatagram(msg, QHostAddress("192.168.1.20"), 65000);
+
+}

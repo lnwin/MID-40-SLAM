@@ -20,7 +20,8 @@ class socket_M: public QObject
 public:
     socket_M();
     void connectMID_40();
-    void needData();    
+    void needData();
+    void stopData();
     void sendHandPackage();
     QThread socthread;
 
@@ -39,6 +40,7 @@ signals:
     void sendHandbool2M(bool);
     void sendData2CRC(QByteArray);
     void sendData2CP(QByteArray);
+    void sendbool2M(bool);
 
 
 public:

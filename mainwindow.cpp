@@ -1,6 +1,6 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+bool canSample=true;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -12,8 +12,10 @@ MainWindow::MainWindow(QWidget *parent)
     UDP_MID40->moveToThread(&udpThread);
     GL=new openglShow;
     CPT =new cloudPointThread;
+    CPT->moveToThread(&cldThread); //  cldThread
     connect(UDP_MID40,SIGNAL(sendDevicdMSG2Main(DEVICEMSG)),this,SLOT(receiveDeviceMSGFromSocket(DEVICEMSG)));
     connect(UDP_MID40,SIGNAL(sendHandbool2M(bool)),this,SLOT(receiveHandbool(bool)));
+     connect(UDP_MID40,SIGNAL(sendbool2M(bool)),this,SLOT(receivebool2M(bool)));
     connect(UDP_MID40,SIGNAL(sendData2CRC(QByteArray)),CRC,SLOT(receiveData(QByteArray)));
     connect(UDP_MID40,SIGNAL(sendData2CP(QByteArray)),CPT,SLOT(reveiveCPFromSOCKET(QByteArray)));
 
@@ -26,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&udpThread, &QThread::started, UDP_MID40, &socket_M::onInitData);
   //  connect(&udpThread, &QThread::finished, UDP_MID40, &socket_M::deleteLater);
     udpThread.start();
+    cldThread.start();
 
 }
 
@@ -33,6 +36,8 @@ MainWindow::~MainWindow()
 {
     udpThread.quit();
     udpThread.wait();
+    cldThread.quit();
+    cldThread.wait();
     delete ui;
 }
 
@@ -62,12 +67,34 @@ void MainWindow::receiveHandbool(bool ok)
     }
 
 }
+void MainWindow::receivebool2M(bool received)
+{
 
+  if(received)
+  {
+     ui->startSample->setText("Stop Sample");
+     canSample=false;
+  }
+
+}
 void MainWindow::on_startSample_clicked()
 {
 
+  if(canSample)
 
-    UDP_MID40->needData();
+  {
+     UDP_MID40->needData();
+     ui->startSample->setText("Stop Sample");
+     canSample=false;
+  }
+
+  else
+  {
+     canSample=true;
+     ui->startSample->setText("Start Sample");
+     UDP_MID40->stopData();
+
+  }
 
 
 }
@@ -124,7 +151,24 @@ void MainWindow::on_pushButton_clicked()
 //    bool ok;
 //    qDebug()<<Hex3Dec(test.toHex());
 //    qDebug()<<"self"<<test.toHex().toLongLong(&ok,16);
-    GL->savecloud();
+  //  GL->savecloud();
+
+    SINS *Csins ;
+    glm::vec3 cameraPos = glm::vec3(1.0f, 0.0f, 1.0f);
+
+    Vector3d CAM(100,0,0);
+//    CAM.x()= cameraPos.x;
+//    CAM.y()= cameraPos.y;
+//    CAM.z()= cameraPos.z;
+
+    Vector3d AK = Csins->Quaternion_Rotation(CAM,0,45,0);
+
+
+    qDebug()<<"AS-x"<<AK.x();
+    qDebug()<<"AS-y"<<AK.y();
+    qDebug()<<"AS-z"<<AK.z();
+   // qDebug()<<"cameraPos.y"<<cameraPos.y;
+   // qDebug()<<"cameraPos.z"<<cameraPos.z;
 
 }
 
