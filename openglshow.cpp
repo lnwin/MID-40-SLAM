@@ -128,10 +128,33 @@ void  openglShow::paintGL()
       // glVertex3f(px[i],py[i],pz[i]);
       // glVertex4f()
         glVertex3fv(cloudP[i]);
+
+
+
+
+
+
+
     }
 //    }
     MTX.unlock();
     glEnd();
+    //===================================Try siyuanshu
+
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//    glPushMatrix();
+
+//    // Multiply quaternion with current modelview matrix
+//    glMultMatrixf(cameraQuaternion.toMatrix());
+
+//    // Some other transformations
+//    glTranslatef(-0.5f, -0.5f, -0.5f);
+
+//    // Draw something, i.e. cube
+//    glDrawArrays(GL_TRIANGLES, 0, 36);
+//    glDrawArrays(GL_TRIANGLES, 0, 36);
+
+    //===================================
     //=====================
     //=====================  paint A ball
     drawball(0,0,0,20,10,10);
@@ -210,6 +233,9 @@ void  openglShow::mouseReleaseEvent(QMouseEvent *event)
 };
 void  openglShow::mouseMoveEvent(QMouseEvent *event)
 {
+
+
+
     yaw     = Ddx+(event->x()-mousedond_x)*0.2;
     pitch   = Ddy+(event->y()-mousedond_y)*0.2;
     if(pitch > 89.0f)
@@ -228,9 +254,9 @@ void  openglShow::mouseMoveEvent(QMouseEvent *event)
 
 //    Vector3d AK = Csins->Quaternion_Rotation(CAM,pitch,yaw,roll);
 
-//    cameraPos.x=AK.x()+Target_y;
-//    cameraPos.y=AK.y()+Target_x;
-//    cameraPos.z=AK.z()+Target_z;
+//    cameraPos.x=AK.x();
+//    cameraPos.y=AK.y();
+//    cameraPos.z=AK.z();
 
     this->update();
 };

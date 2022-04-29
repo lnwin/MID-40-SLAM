@@ -13,9 +13,12 @@ MainWindow::MainWindow(QWidget *parent)
     GL=new openglShow;
     CPT =new cloudPointThread;
     CPT->moveToThread(&cldThread); //  cldThread
+    insPort = new INSport();
+    insPort->moveToThread(&insThread);
+
     connect(UDP_MID40,SIGNAL(sendDevicdMSG2Main(DEVICEMSG)),this,SLOT(receiveDeviceMSGFromSocket(DEVICEMSG)));
     connect(UDP_MID40,SIGNAL(sendHandbool2M(bool)),this,SLOT(receiveHandbool(bool)));
-     connect(UDP_MID40,SIGNAL(sendbool2M(bool)),this,SLOT(receivebool2M(bool)));
+    connect(UDP_MID40,SIGNAL(sendbool2M(bool)),this,SLOT(receivebool2M(bool)));
     connect(UDP_MID40,SIGNAL(sendData2CRC(QByteArray)),CRC,SLOT(receiveData(QByteArray)));
     connect(UDP_MID40,SIGNAL(sendData2CP(QByteArray)),CPT,SLOT(reveiveCPFromSOCKET(QByteArray)));
 
@@ -24,11 +27,16 @@ MainWindow::MainWindow(QWidget *parent)
     connect(CRC,SIGNAL(sendHandbool(bool)),UDP_MID40,SLOT(receiveHandbool(bool)));
     connect(CPT,SIGNAL(sendCloudData2GL(cloudData)),GL,SLOT(receivePointCloud(cloudData)));
 
+    connect(this,SIGNAL(sendINSport(QString)),insPort,SLOT(receiveINSPort(QString)));
+
    // connect(ui->openGLWidget,SIGNAL(wheel2Update()),this,SLOT(updateNow()));
     connect(&udpThread, &QThread::started, UDP_MID40, &socket_M::onInitData);
+    connect(&insThread, &QThread::started, insPort, &INSport::onInit);
   //  connect(&udpThread, &QThread::finished, UDP_MID40, &socket_M::deleteLater);
     udpThread.start();
     cldThread.start();
+    insThread.start();
+    searchPort();
 
 }
 
@@ -38,6 +46,8 @@ MainWindow::~MainWindow()
     udpThread.wait();
     cldThread.quit();
     cldThread.wait();
+    insThread.quit();
+    insThread.wait();
     delete ui;
 }
 
@@ -171,9 +181,28 @@ void MainWindow::on_pushButton_clicked()
    // qDebug()<<"cameraPos.z"<<cameraPos.z;
 
 }
-
-void MainWindow::wheelEvent(QWheelEvent *event)
+void MainWindow::on_INSButton_clicked()
 {
 
+    emit sendINSport(ui->INScomboBox->currentText());
 }
+void MainWindow::searchPort()
+{
+     ui->INScomboBox ->clear();
+     ui->GNSScomboBox->clear();
+    foreach (const QSerialPortInfo &info,QSerialPortInfo::availablePorts())
+    {
+        QSerialPort serial;
+        serial.setPort(info);
+        if(serial.open(QIODevice::ReadWrite))
+        {
 
+            ui->INScomboBox->addItem(serial.portName());
+            ui->INScomboBox->setCurrentIndex(ui->INScomboBox->count()-1);
+            ui->GNSScomboBox->addItem(serial.portName());
+            ui->GNSScomboBox->setCurrentIndex(ui->GNSScomboBox->count()-2);
+            serial.close();
+
+        }
+    }
+}

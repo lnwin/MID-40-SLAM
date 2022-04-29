@@ -28,7 +28,8 @@ SOURCES += \
     socket.cpp \
     Math3d.cpp \
     cloudpointthread.cpp \
-    sins.cpp
+    sins.cpp \
+    insport.cpp
 
 HEADERS += \
     crc.h \
@@ -38,7 +39,9 @@ HEADERS += \
     socket.h \
     math3d.h \
     cloudpointthread.h \
-    sins.h
+    sins.h \
+    insport.h
+
 
 FORMS += \
     mainwindow.ui
