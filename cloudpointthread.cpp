@@ -4,28 +4,31 @@ std::mutex cpmutex;
 int packageLength=2000;
 int collectTime;
 cloudData CD;
-float Ayaw,Apitch,Aroll;
+float Ayaw=0,Apitch=0,Aroll=0;
 std::mutex mtcp;
 
 cloudPointThread::cloudPointThread()
 {
    collectTime=0;
+   clpsins = new SINS();
 
 }
 void cloudPointThread::receiveINS(float yaw,float pitch,float roll)
 {
-    mtcp.lock();
+    cpmutex.lock();
     Ayaw=yaw;
     Apitch=pitch;
     Aroll=roll;
-    qDebug()<<"Ayaw"<<yaw;
-    mtcp.unlock();
+   // qDebug()<<"Ayaw"<<yaw;
+    cpmutex.unlock();
 }
 void cloudPointThread::run()
 {
 
 
     cpmutex.lock();
+
+
     for(int i=0;i<100;i++)
    {
      QByteArray x,y,z,R;
@@ -39,10 +42,19 @@ void cloudPointThread::run()
 //   cpx.append(Hex3Dec(x.toHex()));
 //   cpy.append(Hex3Dec(y.toHex()));
 //   cpz.append(Hex3Dec(z.toHex()));
+     Vector3d origin;
+     origin.x()=Hex3Dec(x.toHex());
+     origin.y()=Hex3Dec(y.toHex());
+     origin.z()=Hex3Dec(z.toHex());
+     Vector3d outPut;
+     outPut=clpsins->Quaternion_Rotation(origin,Apitch,Ayaw,Aroll);
+
 //   cpreflect.append(Hex3Dec(R.toHex()));
-     CD.x[collectTime]=Hex3Dec(x.toHex());
-     CD.y[collectTime]=Hex3Dec(y.toHex());
-     CD.z[collectTime]=Hex3Dec(z.toHex());
+     CD.x[collectTime]=outPut.x();
+     CD.y[collectTime]=outPut.y();
+     CD.z[collectTime]=outPut.z();
+
+
      bool ok;
      CD.reflect[collectTime]=R.toHex().toLongLong(&ok,16);
    //  qDebug()<<Hex3Dec(x.toHex());

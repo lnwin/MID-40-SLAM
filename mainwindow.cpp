@@ -163,9 +163,9 @@ void MainWindow::on_pushButton_clicked()
 //    bool ok;
 //    qDebug()<<Hex3Dec(test.toHex());
 //    qDebug()<<"self"<<test.toHex().toLongLong(&ok,16);
-  //  GL->savecloud();
+   GL->savecloud();
 
-    SINS *Csins ;
+/*    SINS *Csins ;
     glm::vec3 cameraPos = glm::vec3(1.0f, 0.0f, 1.0f);
 
     Vector3d CAM(100,0,0);
@@ -179,7 +179,7 @@ void MainWindow::on_pushButton_clicked()
     qDebug()<<"AS-x"<<AK.x();
     qDebug()<<"AS-y"<<AK.y();
     qDebug()<<"AS-z"<<AK.z();
-   // qDebug()<<"cameraPos.y"<<cameraPos.y;
+   // qDebug()<<"cameraPos.y"<<camera*///Pos.y;
    // qDebug()<<"cameraPos.z"<<cameraPos.z;
 
 }
