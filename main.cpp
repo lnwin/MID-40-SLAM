@@ -8,6 +8,7 @@ int main(int argc, char *argv[])
     qRegisterMetaType<DEVICEMSG>( "DEVICEMSG" );
     qRegisterMetaType<cloudData>( "cloudData" );
     qRegisterMetaType<cloudData2show>( "cloudData2show" );
+    qRegisterMetaType<cloudData2show>( "iNSData" );
     MainWindow w;
     w.show();
 

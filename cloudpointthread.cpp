@@ -4,10 +4,22 @@ std::mutex cpmutex;
 int packageLength=2000;
 int collectTime;
 cloudData CD;
+float Ayaw,Apitch,Aroll;
+std::mutex mtcp;
 
 cloudPointThread::cloudPointThread()
 {
    collectTime=0;
+
+}
+void cloudPointThread::receiveINS(float yaw,float pitch,float roll)
+{
+    mtcp.lock();
+    Ayaw=yaw;
+    Apitch=pitch;
+    Aroll=roll;
+    qDebug()<<"Ayaw"<<yaw;
+    mtcp.unlock();
 }
 void cloudPointThread::run()
 {
@@ -34,6 +46,9 @@ void cloudPointThread::run()
      bool ok;
      CD.reflect[collectTime]=R.toHex().toLongLong(&ok,16);
    //  qDebug()<<Hex3Dec(x.toHex());
+
+
+
      collectTime+=1;
      if(collectTime==packageLength)
      {

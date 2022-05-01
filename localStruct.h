@@ -30,4 +30,20 @@ struct cloudData2show
 
 };
 Q_DECLARE_METATYPE(cloudData2show);
+struct iNSData
+{
+    float Ax_origin;
+    float Ay_origin;
+    float Az_origin;
+    float A_move;
+
+    float V_move;
+    float V_down;
+    float Angle_pitch;
+    float Angle_roll;
+    float Angle_yaw;
+
+};
+
+Q_DECLARE_METATYPE(iNSData)
 #endif // LOCALSTRUCT_H

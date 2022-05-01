@@ -21,7 +21,7 @@ signals:
 public slots:
 
     void reveiveCPFromSOCKET(QByteArray);
-
+    void receiveINS(float yaw,float pitch,float roll);
 private:
     void run() override;
     float Hex3Dec(QString hex);

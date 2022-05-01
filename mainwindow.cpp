@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(this,SIGNAL(sendINSport(QString)),insPort,SLOT(receiveINSPort(QString)));
 
+    connect(insPort,SIGNAL(sendINS2CLP(float,float,float)),CPT,SLOT(receiveINS(float,float,float)));
+
    // connect(ui->openGLWidget,SIGNAL(wheel2Update()),this,SLOT(updateNow()));
     connect(&udpThread, &QThread::started, UDP_MID40, &socket_M::onInitData);
     connect(&insThread, &QThread::started, insPort, &INSport::onInit);
